@@ -36,3 +36,8 @@ terraform.rc
 .terraform.lock.hcl
 
 env.sh
+ca.crt
+myadmin.key
+myadmin.csr
+myadmin.crt
+kube.conf

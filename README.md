@@ -25,3 +25,29 @@ $ ssh $MASTER1
 $ ssh $NODE1
 $ ssh $NODE2
 ```
+
+## Set Up Kubeconfig in local
+
+Run this script
+
+```
+$ ./set_local.sh
+```
+
+It will create an user `myadmin` using [Certificate Signing Request](https://kubernetes.io/docs/reference/access-authn-authz/certificate-signing-requests/#normal-user), grant it cluster-admin role, and set up config for `kubectl` in `kube.conf`.
+
+In order to connect to the API server running in EC2, use SSM to open a port forwarding in another terminal:
+
+```
+$ source env.sh
+$ aws ssm start-session --target $MASTER1 \
+    --document-name AWS-StartPortForwardingSession \
+    --parameters '{"portNumber":["6443"],"localPortNumber":["6443"]}'
+```
+
+Then can use `kubectl` to connect to the API server:
+
+```
+$ export KUBECONFIG=kube.conf
+$ kubectl get nodes
+```
