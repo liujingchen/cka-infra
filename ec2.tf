@@ -90,3 +90,22 @@ resource "aws_instance" "node1" {
 output "node1" {
   value = aws_instance.node1.id
 }
+
+resource "aws_instance" "node2" {
+  ami                    = data.aws_ami.ubuntu.id
+  instance_type          = "t2.medium"
+  subnet_id              = element(aws_subnet.private_subnets.*.id, 0)
+  iam_instance_profile   = aws_iam_instance_profile.ssm_profile.name
+  vpc_security_group_ids = [aws_security_group.default.id]
+  depends_on             = [aws_nat_gateway.k8s_nat]
+  key_name               = aws_key_pair.instance_keypair.key_name
+  user_data_base64       = data.local_file.master_user_data.content_base64
+  tags = {
+    Name = "jingchen-liu-k8s-node-2"
+  }
+  user_data_replace_on_change = true
+}
+
+output "node2" {
+  value = aws_instance.node2.id
+}

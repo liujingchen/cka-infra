@@ -2,10 +2,26 @@
 
 This is for my learning and practice on AWS and Kubernetes.
 
-After applying, run this command on master:
+After applying, run this script to connect nodes to the cluster:
 
 ```
-kubeadm token create --print-join-command
+./bootstrap.sh
 ```
 
-And run the output with `sudo` on each node to join the cluster.
+To SSH to nodes, config the `~/.ssh/config`:
+
+```
+Host i-* mi-*
+    User ubuntu
+    Port 22
+    ProxyCommand sh -c "aws ssm start-session --target %h --document-name AWS-StartSSHSession --parameters 'portNumber=%p'"
+```
+
+then can ssh to the instances:
+
+```
+$ source env.sh
+$ ssh $MASTER1
+$ ssh $NODE1
+$ ssh $NODE2
+```
