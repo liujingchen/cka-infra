@@ -33,7 +33,7 @@ sudo apt-get install -y kubelet=$VERSION kubeadm=$VERSION kubectl=$VERSION
 sudo apt-mark hold kubelet kubeadm kubectl containerd
 
 # Control Panel
-wget https://raw.githubusercontent.com/projectcalico/calico/master/manifests/calico.yaml
+wget https://raw.githubusercontent.com/projectcalico/calico/v3.28.2/manifests/calico.yaml
 kubeadm init --kubernetes-version v1.29.1
 mkdir -p $HOME/.kube
 cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
